@@ -1,0 +1,74 @@
+{
+  "name": "huobi-chain-api",
+  "version": "0.0.1",
+  "description": "An API server for Huobi Chain",
+  "bin": {
+    "hermit-start-server": "npm start"
+  },
+  "scripts": {
+    "start": "dotenv -- node dist/server",
+    "sync": "dotenv -- node dist/sync",
+    "clean": "rm -rf dist",
+    "build": "npm -s run clean && npm -s run generate && tsc --skipLibCheck && ts-node src/scripts/build.ts",
+    "transpile": "npm -s run clean && tsc --allowJs --skipLibCheck && ts-node src/scripts/build.ts",
+    "generate": "npm run generate:mysql-schemats && npm run generate:nexus",
+    "generate:docs": "graphql-markdown --heading-level 2 src/generated/api.graphql > docs/schema.md",
+    "generate:nexus": "dotenv -- ts-node --transpile-only src/scripts/make-schema-types.ts",
+    "generate:mysql-schemats": "dotenv -- ts-node --transpile-only src/scripts/generate-schema.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "dev:server": "dotenv -- ts-node src/server",
+    "dev:sync": "cross-env DEBUG=\"muta:* muta-extra:*\" ts-node --transpile-only src/sync.ts",
+    "release:alpha": "standard-version --prerelease alpha",
+    "migrate": "ts-node --transpile-only src/scripts/migrate.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/homura/huobi-chain-api.git"
+  },
+  "keywords": [
+    "muta",
+    "huobi-chain"
+  ],
+  "author": "homura.dev@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/homura/huobi-chain-api/issues"
+  },
+  "homepage": "https://github.com/homura/huobi-chain-api#readme",
+  "dependencies": {
+    "@muta-extra/apm": "0.4.0-dev.17",
+    "@muta-extra/hermit-purple": "0.4.0-dev.17",
+    "@mutadev/muta-sdk": "0.2.0-rc.2",
+    "@types/async-cache": "^1.1.0",
+    "@types/body-parser": "^1.19.0",
+    "@types/cors": "^2.8.6",
+    "@types/http-proxy-middleware": "^0.19.3",
+    "@types/lodash": "^4.14.149",
+    "@types/lru-cache": "^5.1.0",
+    "apollo-server-express": "^2.14.5",
+    "async-cache": "^1.1.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.3",
+    "huobi-chain-sdk": "^0.5.0-rc.2",
+    "lodash": "^4.17.15",
+    "lru-cache": "^5.1.1"
+  },
+  "devDependencies": {
+    "@homura/schemats": "^3.1.0",
+    "@types/ncp": "^2.0.4",
+    "cross-env": "^7.0.2",
+    "dotenv-cli": "^3.1.0",
+    "graphql-markdown": "^5.2.0",
+    "ncp": "^2.0.0",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "resolutions": {
+    "graphql": "^14.7.0"
+  }
+}
